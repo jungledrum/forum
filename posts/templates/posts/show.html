@@ -1,0 +1,56 @@
+{% extends 'posts/layout.html' %}
+{% load post_filter %}
+
+{% block main %}
+
+<div class="page-header">
+  <h2>{{ post.title}}</h2>
+</div>
+
+<table class="table table-striped" name="comments">
+  <tr>
+    <td>{{ post.username }}</td>
+    <td>{{ post.content }}</td>
+    <td></td>
+  </tr>
+  {% for comment in comments %}
+  <tr>
+    <td>{{ comment.username }}</td>
+    <td>{{ comment.content }}</td>
+    <td>
+      {% if session.username == comment.username %}
+        <a href="/posts/{{ post|mongo_id }}/comments/{{ comment|mongo_id }}/destroy/">删除</a>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+<div class="pagination">
+  <ul>
+    {% for i in pages_num %}
+    {% if page == i %}
+    <li class="active">
+    {% else %}
+    <li>
+    {% endif %}
+    <a href="/posts/{{ post|mongo_id }}/page/{{ i }}">{{ i }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+  
+<form action="/posts/{{ post|mongo_id }}/comments/create/" method="post" name="comment_form">
+  <fieldset>
+    {% csrf_token %}
+    <input type="hidden" name="post_id" value="{{ post|mongo_id }}"/>
+    <legend>发表回复贴</legend>
+    <textarea name="content" class="span8" rows="15"></textarea>
+    <br>
+    <button type="button" class="btn" id="comment_btn">Submit</button>
+  </fieldset>
+</form>
+{% endblock %}
+
+
+
+

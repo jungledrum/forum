@@ -1,0 +1,57 @@
+{% extends 'posts/layout.html' %}
+{% load post_filter %}
+
+{% block main %}
+<table class="table table-striped" name="posts">
+  <tr>
+    <td>主题</td>
+    <td>发起人</td>
+    <td></td>
+  </tr>
+  {% for post in posts %}
+  <tr>
+    <td>
+      <a href="/posts/{{ post|mongo_id }}/">{{ post.title }}</a>
+    </td>
+    <td>
+      {{ post.username }}
+    </td>
+    <td>
+        {% if session.username == post.username %}
+        <a href="/posts/{{ post|mongo_id }}/destroy/">删除</a>
+        {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+<div class="pagination">
+  <ul>
+    {% for i in pages_num %}
+    {% if page == i %}
+    <li class="active">
+    {% else %}
+    <li>
+    {% endif %}
+    <a href="/posts/page/{{ i }}">{{ i }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+  
+  
+
+<form action="/posts/create/" method="post">
+  <fieldset>
+    {% csrf_token %}
+    <legend>发表主题贴</legend>
+    <label>标题</label>
+    <input type="text" name="title" class="span8"/>
+    <label>内容</label>
+    <textarea name="content" class="span8" rows="15"></textarea>
+    <br>
+    <button type="button" class="btn" id="subject_btn">Submit</button>
+  </fieldset>
+</form>
+{% endblock %}
+
+
