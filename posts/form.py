@@ -4,8 +4,13 @@ from posts.utils import init_db, SALT
 import md5
 
 class LoginForm(forms.Form):
-    username = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput(), min_length=8, max_length=20)
+    username = forms.EmailField(error_messages={'required': '请输入你的邮箱',
+                                                'invalid': '邮箱格式不对'})
+    password = forms.CharField(widget=forms.PasswordInput(),
+                               min_length=8, max_length=20,
+                               error_messages={'required': '请输入你的密码',
+                                               'max_length': '最长20个字符',
+                                               'min_length': '最少8个字符'})
 
     def clean_password(self):
         db = init_db()
@@ -20,13 +25,22 @@ class LoginForm(forms.Form):
         return self.data['password']
 
 class RegisterForm(forms.Form):
-    username = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput(), min_length=8, max_length=20)
-    password2 = forms.CharField(widget=forms.PasswordInput(), min_length=8, max_length=20)
+    username = forms.EmailField(error_messages={'required': '请输入你的邮箱',
+                                                'invalid': '邮箱格式不对'})
+    password = forms.CharField(widget=forms.PasswordInput(),
+                               min_length=8, max_length=20,
+                               error_messages={'required': '请输入你的密码',
+                                               'max_length': '最长20个字符',
+                                               'min_length': '最少8个字符'})
+    password2 = forms.CharField(widget=forms.PasswordInput(),
+                                min_length=8, max_length=20,
+                                error_messages={'required': '请再次输入你的密码',
+                                                'max_length': '最长20个字符',
+                                                'min_length': '最少8个字符'})
 
     def clean_password(self):
         if self.data['password'] != self.data['password2']:
-            raise forms.ValidationError('Passwords are not the same')
+            raise forms.ValidationError('两次输入的密码不一致')
         return self.data['password']
 
     def clean_username(self):

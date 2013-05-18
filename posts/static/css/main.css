@@ -1,0 +1,54 @@
+body {
+  background-color: whiteSmoke;
+}
+
+.post-content {
+  padding: 10px;
+}
+.post-item {
+  margin-bottom: 20px;
+  width: 720px;
+}
+.post-title {
+  margin-bottom: 10px;
+}
+.post-top {
+  background-color: #FAFAFA;
+  background-image: -webkit-linear-gradient(top,white,#F2F2F2);
+  border: 1px solid #D4D4D4;
+  padding: 10px;
+}
+
+.header {
+  height: 100px;
+  background-color: #D9D1BA;
+}
+
+.progressbar {
+  position: fixed;
+  bottom: 0px;
+  width: 150px;
+  height: 40px;
+  background-color: #FAFAFA;
+  background-image: -webkit-linear-gradient(top,white,#F2F2F2);
+  border: 1px solid #D4D4D4;
+}
+.progressbar-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: #E4E4E6;
+  width: 150px;
+  height: 40px;
+}
+.progressbar-text {
+  position: relative;
+  top: 10px;
+  z-index: 1;
+  text-align: center;
+}
+
+.editor {
+  width: 400px;
+  height: 300px;
+}

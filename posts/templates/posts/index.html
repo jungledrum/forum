@@ -2,56 +2,71 @@
 {% load post_filter %}
 
 {% block main %}
-<table class="table table-striped" name="posts">
-  <tr>
-    <td>主题</td>
-    <td>发起人</td>
-    <td></td>
-  </tr>
-  {% for post in posts %}
-  <tr>
-    <td>
-      <a href="/posts/{{ post|mongo_id }}/">{{ post.title }}</a>
-    </td>
-    <td>
-      {{ post.username }}
-    </td>
-    <td>
-        {% if session.username == post.username %}
-        <a href="/posts/{{ post|mongo_id }}/destroy/">删除</a>
-        {% endif %}
-    </td>
-  </tr>
-  {% endfor %}
-</table>
 
-<div class="pagination">
-  <ul>
-    {% for i in pages_num %}
-    {% if page == i %}
-    <li class="active">
-    {% else %}
-    <li>
-    {% endif %}
-    <a href="/posts/page/{{ i }}">{{ i }}</a></li>
+<div class="row">
+  <a href="#myModal" role="button" class="btn pull-right" data-toggle="modal"><i class="icon-plus"></i> 创建新主题</a>
+</div>
+
+<div class="row">
+  <table class="table table-bordered" name="posts">
+    <tr>
+      <td>主题</td>
+      <td>发起人</td>
+      <td></td>
+    </tr>
+    {% for post in posts %}
+    <tr>
+      <td>
+        <a href="{% url 'posts.views.posts_view.show' post|mongo_id %}">{{ post.title }}</a>
+      </td>
+      <td>
+        {{ post.username }}
+      </td>
+      <td>
+          {% if session.username == post.username %}
+          <a href="{% url 'posts.views.posts_view.destroy' post|mongo_id %}">删除</a>
+          {% endif %}
+      </td>
+    </tr>
     {% endfor %}
-  </ul>
+  </table>
+</div>
+
+<div class="row">
+  <div class="pagination">
+    <ul>
+      {% for i in pages_num %}
+      {% if page == i %}
+      <li class="active">
+      {% else %}
+      <li>
+      {% endif %}
+      <a href="{% url 'posts.views.posts_view.index' i %}">{{ i }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
 </div>
   
-  
-
-<form action="/posts/create/" method="post">
-  <fieldset>
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">发表主题贴</h3>
+  </div>
+  <div class="modal-body">
     {% csrf_token %}
-    <legend>发表主题贴</legend>
     <label>标题</label>
-    <input type="text" name="title" class="span8"/>
+    <input type="text" name="title" class="span6"/>
     <label>内容</label>
-    <textarea name="content" class="span8" rows="15"></textarea>
-    <br>
-    <button type="button" class="btn" id="subject_btn">Submit</button>
-  </fieldset>
-</form>
+    <textarea name="content" class="span6" rows="14"></textarea>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+    <button class="btn btn-primary" id="subject_btn">提交</button>
+  </div>
+</div>
 {% endblock %}
+
+
 
 
